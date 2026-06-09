@@ -1,0 +1,21 @@
+---
+// Header with logo, status indicator, user info, admin/logout buttons
+---
+
+<div class="header">
+  <h1>
+    <img src="/logo.png" alt="Tallann Resources" style="height:36px; width:auto;" />
+    Sales Role Play Scorecard
+  </h1>
+  <div class="header-right">
+    <div class="status" id="status">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Not connected</span>
+    </div>
+    <div class="user-info" id="userInfo" style="display:none;">
+      <span class="user-email" id="userEmail"></span>
+      <button class="btn-admin" id="adminBtn" onclick="openAdminSetup()" style="display:none;">&#9881; Admin</button>
+      <button class="btn-logout" onclick="handleLogout()">Log Out</button>
+    </div>
+  </div>
+</div>

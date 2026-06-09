@@ -1,0 +1,56 @@
+---
+// Admin Settings modal (locked behind password)
+---
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-card" style="position:relative;">
+    <h2>Admin Settings</h2>
+    <p class="subtitle">Update your app credentials. Changes are saved securely in Firestore.</p>
+
+    <div class="alert-error" id="adminError"></div>
+    <div class="alert-success" id="adminSuccess"></div>
+
+    <div class="field">
+      <label>Admin Password</label>
+      <input type="password" id="adminPasswordCheck" placeholder="Enter admin password to unlock" />
+    </div>
+
+    <div id="adminFields" style="display:none;">
+      <hr class="section-divider" />
+      <div class="section-label">ElevenLabs</div>
+      <div class="field"><label>Agent ID</label><input type="text" id="adminAgentId" /></div>
+      <div class="field"><label>ElevenLabs API Key</label><input type="password" id="adminElevenLabsApiKey" /></div>
+
+      <hr class="section-divider" />
+      <div class="section-label">AI Scoring</div>
+      <div class="field">
+        <label>Provider</label>
+        <select id="adminAiProvider"><option value="anthropic">Anthropic (Claude)</option><option value="openai">OpenAI (GPT-4o)</option></select>
+      </div>
+      <div class="field"><label>API Key</label><input type="password" id="adminAiApiKey" /></div>
+
+      <hr class="section-divider" />
+      <div class="section-label">Change Admin Password</div>
+      <div class="field"><label>New Password (leave blank to keep current)</label><input type="password" id="adminNewPassword" placeholder="Leave blank to keep current" /></div>
+
+      <button class="btn btn-primary btn-full" onclick="saveAdminSettings()">Save Changes</button>
+
+      <hr class="section-divider" />
+      <div class="section-label">Team Management</div>
+      <button class="btn btn-secondary btn-full" onclick="openDashboard()" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+        &#128202; Open Team Dashboard
+      </button>
+      <button class="btn btn-secondary btn-full" onclick="openAuditLog()" style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px;">
+        &#128220; View Audit Log
+      </button>
+    </div>
+
+    <div id="adminUnlockBtn" style="margin-top:12px;">
+      <button class="btn btn-primary btn-full" onclick="unlockAdmin()">Unlock Settings</button>
+    </div>
+
+    <div style="text-align:center; margin-top:16px;">
+      <a style="color:var(--text-dim); font-size:13px; cursor:pointer;" onclick="closeAdminSetup()">Cancel</a>
+    </div>
+  </div>
+</div>

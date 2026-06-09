@@ -1,0 +1,68 @@
+---
+// Main app container with action bar, tabs, and panels
+---
+
+<div class="app-container" id="appContainer">
+  <div class="main-content">
+    <div class="action-bar">
+      <div class="left">
+        <button class="btn btn-primary" id="startBtn" onclick="startSession()">&#9654; Start Practice Call</button>
+        <button class="btn btn-danger" id="endBtn" onclick="endSession()" style="display:none;">&#9632; End &amp; Score</button>
+      </div>
+      <button class="btn btn-secondary" onclick="resetAll()">&#8635; New Session</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="conversation" onclick="switchTab('conversation')">Conversation</div>
+      <div class="tab" data-tab="transcript" onclick="switchTab('transcript')">Transcript</div>
+      <div class="tab" data-tab="scorecard" onclick="switchTab('scorecard')">Scorecard</div>
+      <div class="tab" data-tab="history" onclick="switchTab('history')">Score History</div>
+    </div>
+
+    <div class="tab-panel active" id="panel-conversation">
+      <div class="conversation-area" id="conversationArea">
+        <div class="conversation-placeholder" id="placeholder">
+          <div class="icon">&#128172;</div>
+          <p>Click <strong>Start Practice Call</strong> to begin your cold call role play. The AI prospect will answer, and you'll practice your sales approach.</p>
+          <p style="margin-top:12px; font-size:13px; color:var(--text-dim);">The ElevenLabs voice widget will appear in the bottom-right corner. Speak naturally and practice your staffing sales pitch!</p>
+        </div>
+        <div id="liveTranscript" style="display:none; width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-transcript">
+      <div class="transcript-area" id="transcriptArea">
+        <div class="transcript-empty"><p>No transcript yet. Start a conversation to see messages appear here.</p></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-scorecard">
+      <div class="scoring-overlay" id="scoringOverlay">
+        <div class="spinner"></div>
+        <h3>Analyzing your conversation...</h3>
+        <p style="color:var(--text-dim); margin-top:8px;">Evaluating your sales performance against the Tallann methodology</p>
+      </div>
+      <div class="scorecard" id="scorecardContent"></div>
+      <div class="transcript-empty" id="scorecardEmpty">
+        <p>Complete a conversation and click "End &amp; Score" to see your scorecard.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-history">
+      <div class="history-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <h3>Your Score History</h3>
+          <button class="btn btn-secondary" id="downloadHistoryBtn" onclick="downloadHistoryPDF()" style="font-size:13px; padding:6px 16px; display:none; align-items:center; gap:6px;">
+            &#128196; Download History PDF
+          </button>
+        </div>
+        <div class="chart-wrapper"><canvas id="historyChart"></canvas></div>
+        <div class="history-list" id="historyList">
+          <div class="history-empty" id="historyEmpty"><p>No scorecards yet. Complete your first practice call to start tracking your progress!</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="widget-container"></div>

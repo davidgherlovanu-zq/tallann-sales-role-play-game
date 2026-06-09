@@ -1,0 +1,23 @@
+---
+// Admin Team Dashboard modal
+---
+
+<div class="modal-overlay dashboard-modal" id="dashboardModal">
+  <div class="modal-card">
+    <div class="dashboard-header">
+      <div>
+        <h2>Team Dashboard</h2>
+        <p style="color:var(--text-dim); font-size:13px; margin-top:2px;">All user activity and scores</p>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-secondary" onclick="loadDashboardData()" style="font-size:13px; padding:6px 14px;">&#8635; Refresh</button>
+        <button class="btn btn-secondary" onclick="downloadDashboardPDF()" style="font-size:13px; padding:6px 14px;">&#128196; Export PDF</button>
+        <a style="color:var(--text-dim); font-size:20px; cursor:pointer; padding:4px 8px;" onclick="closeDashboard()">&times;</a>
+      </div>
+    </div>
+    <div class="dashboard-stats" id="dashboardStats"></div>
+    <div id="dashboardContent">
+      <div class="dashboard-loading"><div class="spinner"></div><p style="color:var(--text-dim); margin-top:10px;">Loading team data...</p></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+export let transcript = [];
+export let isSessionActive = false;
+export let conversationId = null;
+export let sessionStartTime = null;
+export let scoreHistory = [];
+export let historyChart = null;
+export let lastDisplayedScorecard = null;
+export let dashboardData = [];
+export let isSignUp = false;
+
+export function setTranscript(val) { transcript = val; }
+export function setIsSessionActive(val) { isSessionActive = val; }
+export function setConversationId(val) { conversationId = val; }
+export function setSessionStartTime(val) { sessionStartTime = val; }
+export function setScoreHistory(val) { scoreHistory = val; }
+export function setHistoryChart(val) { historyChart = val; }
+export function setLastDisplayedScorecard(val) { lastDisplayedScorecard = val; }
+export function setDashboardData(val) { dashboardData = val; }
+export function setIsSignUp(val) { isSignUp = val; }

@@ -1,17 +1,26 @@
 ---
-
+import AdminModal from "../components/admin-modal.astro";
+import AuditLogModal from "../components/audit-log-modal.astro";
+import AuthScreen from "../components/auth-screen.astro";
+import DashboardModal from "../components/dashboard-modal.astro";
+import Header from "../components/header.astro";
+import LoadingScreen from "../components/loading-screen.astro";
+import MainApp from "../components/main-app.astro";
+import SetupWizard from "../components/setup-wizard.astro";
+import BaseLayout from "../layouts/base-layout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <Header />
+  <SetupWizard />
+  <AuthScreen />
+  <LoadingScreen />
+  <AdminModal />
+  <DashboardModal />
+  <AuditLogModal />
+  <MainApp />
+
+  <script>
+    import('../scripts/boot.js');
+  </script>
+</BaseLayout>

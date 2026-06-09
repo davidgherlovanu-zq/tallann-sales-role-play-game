@@ -1,0 +1,39 @@
+---
+// Login / Signup screen
+---
+
+<div class="center-screen" id="authScreen" style="display:none;">
+  <div class="card" style="max-width:420px;">
+    <div style="text-align:center; margin-bottom:16px;">
+      <img src="/logo.png" alt="Tallann Resources" style="height:48px; width:auto;" />
+    </div>
+    <h2 id="authTitle">Welcome Back</h2>
+    <p class="subtitle" id="authSubtitle">Sign in to access your sales role play scorecards</p>
+
+    <div class="alert-error" id="authError"></div>
+    <div class="alert-success" id="authSuccess"></div>
+
+    <div id="signupNameField" class="field" style="display:none;">
+      <label for="authName">Full Name</label>
+      <input type="text" id="authName" placeholder="Jane Smith" />
+    </div>
+    <div class="field">
+      <label for="authEmail">Email Address</label>
+      <input type="email" id="authEmail" placeholder="you@company.com" />
+    </div>
+    <div class="field">
+      <label for="authPassword">Password</label>
+      <input type="password" id="authPassword" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" />
+    </div>
+
+    <button class="btn btn-primary btn-full" id="authBtn" onclick="handleAuth()">Sign In</button>
+
+    <div class="auth-toggle">
+      <span id="authToggleText">Don't have an account?</span>
+      <a id="authToggleLink" onclick="toggleAuthMode()">Create one</a>
+    </div>
+    <div class="reset-link" id="resetLink">
+      <a onclick="handlePasswordReset()">Forgot password?</a>
+    </div>
+  </div>
+</div>

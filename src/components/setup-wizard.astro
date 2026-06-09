@@ -1,0 +1,73 @@
+---
+// Initial setup wizard (2 steps: ElevenLabs + AI Scoring)
+---
+
+<div class="center-screen" id="setupScreen" style="display:none;">
+  <div class="card" style="max-width:520px;">
+    <div style="text-align:center; margin-bottom:16px;">
+      <img src="/logo.png" alt="Tallann Resources" style="height:48px; width:auto;" />
+    </div>
+    <h2>Welcome! Let's Get Set Up</h2>
+    <p class="subtitle">This one-time setup connects the app to your Firebase project, ElevenLabs agent, and AI scoring. Your clients won't see any of this.</p>
+
+    <div class="step-indicator">
+      <div class="step-dot active" id="stepDot1"></div>
+      <div class="step-dot" id="stepDot2"></div>
+    </div>
+
+    <div class="alert-error" id="setupError"></div>
+
+    <!-- Step 1: ElevenLabs -->
+    <div class="setup-step active" id="setupStep1">
+      <div class="section-label">Step 1 of 2 &mdash; ElevenLabs Agent</div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px; line-height:1.5;">
+        Enter your ElevenLabs Conversational AI agent ID and API key. Find these in your
+        <a href="https://elevenlabs.io" target="_blank" style="color:var(--accent);">ElevenLabs dashboard</a>.
+      </p>
+      <div class="field">
+        <label>Agent ID</label>
+        <input type="text" id="setupAgentId" placeholder="e.g. abc123def456..." />
+        <div class="hint">Found under your agent's settings page.</div>
+      </div>
+      <div class="field">
+        <label>ElevenLabs API Key</label>
+        <input type="password" id="setupElevenLabsApiKey" placeholder="xi-..." />
+        <div class="hint">Found under Profile &gt; API Keys. Needed to retrieve the transcript after each call.</div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="setupNext(1)">Next &rarr;</button>
+    </div>
+
+    <!-- Step 2: AI Scoring -->
+    <div class="setup-step" id="setupStep2">
+      <div class="section-label">Step 2 of 2 &mdash; AI Scoring</div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px; line-height:1.5;">
+        Choose your AI provider and enter the API key. This powers the scorecard analysis after each practice call.
+      </p>
+      <div class="field">
+        <label>AI Provider</label>
+        <select id="setupAiProvider">
+          <option value="anthropic">Anthropic (Claude)</option>
+          <option value="openai">OpenAI (GPT-4o)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" id="setupAiApiKey" placeholder="sk-..." />
+        <div class="hint">Your API key is stored securely in Firestore. It's never sent anywhere except directly to the AI provider.</div>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="field">
+        <label>Admin Password</label>
+        <input type="password" id="setupAdminPassword" placeholder="Choose a password to access these settings later" />
+        <div class="hint">You'll need this to change these settings in the future. Your clients won't have access to it.</div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn btn-secondary" onclick="setupBack(2)" style="flex:1;">&larr; Back</button>
+        <button class="btn btn-primary" onclick="completeSetup()" style="flex:2;">&#10003; Complete Setup</button>
+      </div>
+    </div>
+  </div>
+</div>
