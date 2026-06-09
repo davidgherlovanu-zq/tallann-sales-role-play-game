@@ -13,7 +13,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 index-reference.html
-
+Tallann_Integration_TZ_v2.pdf
 
 # environment variables
 .env
@@ -24,3 +24,4 @@ index-reference.html
 
 # jetbrains setting folder
 .idea/
+.vercel

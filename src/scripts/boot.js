@@ -15,7 +15,9 @@ import "/src/lib/dashboard.js";
 import "/src/lib/audit.js";
 import "/src/lib/pdf.js";
 import "/src/lib/session.js";
+import { initBubbleSsoBridge } from "/src/lib/bubble-sso.js";
 
 (function boot() {
+	initBubbleSsoBridge();
 	initFirebase();
 })();

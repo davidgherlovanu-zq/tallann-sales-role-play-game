@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bubble SSO Mock | Tallann</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; background: #0e1524; color: #edf3ff; }
+    .shell { display: grid; grid-template-columns: minmax(360px, 430px) 1fr; min-height: 100vh; }
+    aside { padding: 24px; border-right: 1px solid rgba(255,255,255,.1); background: #121c2f; }
+    main { padding: 18px; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    p { color: #aab7cd; line-height: 1.55; }
+    label { display: block; margin: 14px 0 6px; color: #c9d7ef; font-size: 13px; }
+    input { width: 100%; box-sizing: border-box; border: 1px solid rgba(255,255,255,.16); border-radius: 10px; background: #0b1220; color: #edf3ff; padding: 10px 12px; }
+    button { border: 0; border-radius: 10px; padding: 10px 12px; background: #7fad41; color: #10190b; font-weight: 700; cursor: pointer; }
+    button.secondary { background: #25324b; color: #d9e5ff; }
+    button.danger { background: #b94c4c; color: #fff; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .log { height: 360px; overflow: auto; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: #080d17; padding: 12px; font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .event { margin-bottom: 10px; color: #b8c6de; white-space: pre-wrap; word-break: break-word; }
+    .event strong { color: #8ec7ff; }
+    iframe { width: 100%; height: calc(100vh - 36px); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; background: white; }
+    code { color: #c8ffd4; }
+    @media (max-width: 900px) { .shell { grid-template-columns: 1fr; } iframe { height: 760px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <h1>Bubble SSO Mock</h1>
+      <p>This page simulates Bubble embedding the Astro app in an iframe. It logs iframe messages, calls a mock token API, and posts the token back into the iframe.</p>
+
+      <label for="email">Bubble user email</label>
+      <input id="email" value="demo@tallannresources.com" />
+
+      <label for="bubbleUserId">Bubble unique id</label>
+      <input id="bubbleUserId" value="bubble_demo_123" />
+
+      <label for="name">Bubble user name</label>
+      <input id="name" value="Demo Tallann User" />
+
+      <div class="actions">
+        <button id="sendTokenBtn" type="button">Send Mock Token</button>
+        <button id="simulateExpiredBtn" class="secondary" type="button">Simulate Expired Token</button>
+        <button id="bubbleExpiredBtn" class="danger" type="button">Send Bubble Expired</button>
+      </div>
+
+      <p><strong>Expected proof:</strong> iframe posts <code>AUTH_STATUS</code>, this mock calls <code>/api/mock-firebase-token</code>, then iframe accepts <code>mock-token-*</code> in demo mode.</p>
+      <div id="log" class="log" aria-live="polite"></div>
+    </aside>
+
+    <main>
+      <iframe id="roleplay-frame" src="/?bubble_sso_demo=1" allow="microphone"></iframe>
+    </main>
+  </div>
+
+  <script>
+    const frame = document.getElementById('roleplay-frame');
+    const logEl = document.getElementById('log');
+
+    function log(direction, payload) {
+      const item = document.createElement('div');
+      item.className = 'event';
+      item.innerHTML = `<strong>${new Date().toLocaleTimeString()} ${direction}</strong>\n${JSON.stringify(payload, null, 2)}`;
+      logEl.prepend(item);
+    }
+
+    function getUserPayload() {
+      return {
+        email: document.getElementById('email').value.trim(),
+        bubbleUserId: document.getElementById('bubbleUserId').value.trim(),
+        name: document.getElementById('name').value.trim()
+      };
+    }
+
+    async function requestMockToken(reason) {
+      const payload = getUserPayload();
+      log('Bubble -> mock API', { reason, payload });
+      const response = await fetch('/api/mock-firebase-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      log('mock API -> Bubble', data);
+      if (!response.ok) return;
+      frame.contentWindow.postMessage({ type: 'FIREBASE_TOKEN', token: data.token }, window.location.origin);
+      log('Bubble -> iframe', { type: 'FIREBASE_TOKEN', token: data.token });
+    }
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+      const data = event.data || {};
+      log('iframe -> Bubble', data);
+
+      if (data.type === 'AUTH_STATUS' && data.status === 'Unauthenticated') {
+        requestMockToken(data.reason || 'initial_load');
+      }
+
+      if (data.type === 'TOKEN_REFRESH_REQUIRED') {
+        requestMockToken(data.reason || 'refresh_required');
+      }
+    });
+
+    document.getElementById('sendTokenBtn').addEventListener('click', () => requestMockToken('manual_button'));
+    document.getElementById('simulateExpiredBtn').addEventListener('click', () => {
+      const message = { type: 'SIMULATE_TOKEN_EXPIRED' };
+      frame.contentWindow.postMessage(message, window.location.origin);
+      log('Bubble -> iframe', message);
+    });
+    document.getElementById('bubbleExpiredBtn').addEventListener('click', () => {
+      const message = { type: 'BUBBLE_SESSION_EXPIRED' };
+      frame.contentWindow.postMessage(message, window.location.origin);
+      log('Bubble -> iframe', message);
+    });
+  </script>
+</body>
+</html>
